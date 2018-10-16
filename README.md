@@ -7,15 +7,23 @@ It is set to CCA Mode 1 (Energy above threshold) and adjusted the threshold for 
 This project relies on the following repositories.
 
 Board definitions come from the Sparkfun devel board (retired)
+
 https://www.sparkfun.com/products/retired/11197
+
 https://learn.sparkfun.com/tutorials/atmega128rfa1-dev-board-hookup-guide
+
 Board Definitions File
+
 https://cdn.sparkfun.com/assets/learn_tutorials/9/2/ATmega128RFA1_Addon.zip
+
 Repo
+
 https://github.com/sparkfun/ATmega128RFA1_Dev
+
 Initial radio set up came from the BasicChat Sketch.
 
 The text/drawing come from following repo
+
 https://github.com/bitbank2/SmartResponseXE
 
 It includes functions for using the power button to put the device to sleep and wake it back up, but I haven't gotten it implemented yet. So power is controlled by pulling the batteries.
