@@ -24,15 +24,34 @@ void setup()
 
 void loop()
 {
+  //char lcd_out[64];
+  byte keypressed = 0x00;
+  int ctr = 0;
+  int watch_dog = 0;
   set_CCA();
   while(1)
   {
-    delay(5);
+    //delay(5);
+    if(ctr > 10000)
+    {
+      keypressed = SRXEGetKey();
+      //sprintf(lcd_out,"button pressed:%d %02X",keypressed,keypressed);
+      //SRXEWriteString(0,10,lcd_out, FONT_NORMAL, 3, 0);
+      if(keypressed == 0xF0)//top left button
+      {
+        SRXESleep();
+      }
+      ctr=0;
+    }
+
     if(done == 1)//if done
     {
+      watch_dog = 0;
       done = 0;
       if(cca_status == 0)//we have it
       {
+        //clear out the previous
+        draw_bar((cca_channel - MIN_CHANNEL),cca_threshold,1);
         //draw the bar graph
         draw_bar((cca_channel - MIN_CHANNEL),cca_threshold,3);
         //reset the threshold
@@ -43,7 +62,11 @@ void loop()
 
       //if the threshold is too low reset to the max(which triggers a channel change)
       if(cca_threshold < MIN_THRESHOLD)
+      {
         cca_threshold = MAX_THRESHOLD;
+        //clear out the previous
+        draw_bar((cca_channel - MIN_CHANNEL),cca_threshold,1);
+      }
 
       if(cca_threshold == MAX_THRESHOLD)
       {
@@ -53,8 +76,8 @@ void loop()
           cca_channel = MIN_CHANNEL;
           //channel reset so reset the bar
           //ghost bars
-          for(int x=0;x<16;x++)
-              draw_bar(x, 15,1);
+          //for(int x=0;x<16;x++)
+          //    draw_bar(x, 15,1);
         }
         //change the channel
         rfChannel(cca_channel);
@@ -62,6 +85,22 @@ void loop()
       //listen again
       set_CCA();
     }
+    else
+    {
+      watch_dog++;
+      if(watch_dog > 10000)
+      {
+        //reset!?!
+        watch_dog = 0;
+        cca_threshold = 15;
+        cca_status = -1;
+        cca_channel = 11;
+        done = 0;
+        setup();
+        set_CCA();
+      }
+    }
+    ctr++;
   }//main loop
 /**/
 }

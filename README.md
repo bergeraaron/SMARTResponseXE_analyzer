@@ -26,4 +26,4 @@ The text/drawing come from following repo
 
 https://github.com/bitbank2/SmartResponseXE
 
-It includes functions for using the power button to put the device to sleep and wake it back up, but I haven't gotten it implemented yet. So power is controlled by pulling the batteries.
+To put it to sleep, press/hold the top left button. To wake up use the power button.
